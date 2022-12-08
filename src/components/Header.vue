@@ -1,7 +1,9 @@
 <template>
   <header id="header">
-    <router-link to="/">Главная</router-link>
-    <router-link to="/favorites">Избранное</router-link>
+    <div class="container">
+      <router-link to="/">Главная</router-link>
+      <router-link to="/favorites">Избранное</router-link>
+    </div>
   </header>
 </template>
 

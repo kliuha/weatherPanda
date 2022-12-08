@@ -33,7 +33,6 @@ export default {
     reduceWeatherObject(obj) {
       let temp = [];
       obj.list.forEach((element) => {
-        // const elementDate = new Date(element.dt * 1000).getDate();
         if (
           !temp.find(
             (weather) =>

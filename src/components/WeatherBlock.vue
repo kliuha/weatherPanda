@@ -13,33 +13,53 @@
       <CityInput />
     </div>
     <div class="city-weather flex-items">
-      <WeatherInfo blockId="0" />
+      <WeatherInfo v-bind:blockId="id" v-bind:weatherArray="weatherData" />
     </div>
-    <div class="weather-chart flex-items">3</div>
+    <div class="weather-chart flex-items">
+      <Chart v-bind:blockId="id" v-bind:weatherArray="weatherData" />
+    </div>
+    <div class="plus-button">
+      <button
+        class="plus flex-items"
+        @click="addBlock"
+        v-bind:class="{ choosen: isChoosen }"
+      >
+        &#9660;
+      </button>
+    </div>
   </div>
 </template>
 
 <script>
 import CityInput from "@/components/CityInput";
 import WeatherInfo from "@/components/WeatherInfo";
+import Chart from "@/components/Tools/Chart.vue";
+import { mapGetters } from "vuex";
 
 export default {
   name: "WeatherBlock",
   components: {
     CityInput,
     WeatherInfo,
+    Chart,
   },
   props: {
-    msg: String,
+    id: String,
   },
   data() {
     return {
       isChoosen: false,
     };
   },
+  computed: {
+    ...mapGetters("appModule", ["weatherData"]),
+  },
   methods: {
     toggleFavourites() {
       this.isChoosen = !this.isChoosen;
+    },
+    addBlock() {
+      this.$emit("addBlock");
     },
   },
 };

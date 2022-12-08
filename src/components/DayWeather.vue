@@ -10,8 +10,10 @@
         Температура:
         {{
           weatherObject?.list[0].main.temp
-            ? (weatherObject?.list[0].main.temp - 273.15).toFixed()
-            : ""
+            ? (weatherObject?.list[0].main.temp - 273.15).toFixed() +
+              "&#176;" +
+              "C"
+            : "" + "&#176;" + "C"
         }}
       </p>
     </div>

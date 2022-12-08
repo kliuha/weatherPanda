@@ -1,32 +1,27 @@
 <template>
   <div class="weather-info">
     <div class="tabs">
-      <input
-        type="radio"
+      <button
         name="dayWeekType"
-        id="dayView"
-        value="day"
-        v-model.trim="viewType"
-        checked
-      />
-      <input
-        type="radio"
+        @click="setView('day')"
+        class="day-button toggleButton"
+      >
+        День
+      </button>
+      <button
         name="dayWeekType"
-        value="week"
-        v-model.trim="viewType"
-        id="weekView"
-      />
-      <div class="switch">
-        <label for="dayView">День</label>
-        <label for="weekView">Неделя</label>
-      </div>
+        @click="setView('week')"
+        class="week-button toggleButton"
+      >
+        Неделя
+      </button>
     </div>
     <DayWeather
-      v-bind:weatherObject="weatherData[blockId]"
+      v-bind:weatherObject="weatherArray[blockId]"
       v-show="viewType == 'day'"
     />
     <WeekWeather
-      v-bind:weatherObject="weatherData[blockId]"
+      v-bind:weatherObject="weatherArray[blockId]"
       v-show="viewType == 'week'"
     />
   </div>
@@ -34,7 +29,6 @@
 <script>
 import DayWeather from "@/components/DayWeather.vue";
 import WeekWeather from "@/components/WeekWeather.vue";
-import { mapGetters } from "vuex";
 
 export default {
   name: "WeatherInfo",
@@ -44,89 +38,90 @@ export default {
   },
   props: {
     blockId: String,
+    weatherArray: Array,
   },
   data() {
     return {
       viewType: "day",
     };
   },
-  computed: {
-    ...mapGetters("appModule", ["weatherData"]),
+  methods: {
+    setView(value) {
+      this.viewType = value;
+    },
   },
 };
 </script>
 
-<style>
-.switch {
+<style scoped>
+.tabs {
   position: absolute;
-  left: 22%;
-  top: 17%;
-  width: 110px;
-  height: 7%;
-  text-align: center;
-  margin: -30px 0 0 -75px;
+  left: 5%;
+  top: -46px;
+}
+.toggleButton {
   background: #00bc9c;
   transition: all 0.2s ease;
   border-radius: 25px;
+  outline: none;
 }
-.switch span {
-  position: absolute;
-  width: 20px;
-  height: 4px;
-  top: 50%;
-  left: 50%;
-  margin: -2px 0px 0px -4px;
-  background: #fff;
-  display: block;
-  transform: rotate(-45deg);
-  transition: all 0.2s ease;
+.day-button {
+  padding: 10px 6px 10px 12px;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+  border-right: none;
 }
-.switch span:after {
-  content: "";
-  display: block;
-  position: absolute;
-  width: 4px;
-  height: 12px;
-  margin-top: -8px;
-  background: #fff;
-  transition: all 0.2s ease;
+.week-button {
+  padding: 10px 12px 10px 6px;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+  border-left: none;
 }
-input[type="radio"] {
-  display: none;
+.weather-info {
+  position: relative;
 }
-.switch label {
-  cursor: pointer;
-  color: rgba(0, 0, 0, 0.2);
-  width: 60px;
-  line-height: 50px;
-  transition: all 0.2s ease;
+@media (max-width: 479px) {
+  .toggleButton {
+    font-size: 8px;
+  }
+  .day-button {
+    padding: 6px 2px 6px 6px;
+  }
+  .week-button {
+    padding: 6px 6px 6px 2px;
+  }
 }
-label[for="dayView"] {
-  position: absolute;
-  left: 0px;
-  height: 20px;
+@media (min-width: 480px) and (max-width: 767px) {
+  .toggleButton {
+    font-size: 10px;
+  }
+  .day-button {
+    padding: 8px 3px 8px 8px;
+  }
+  .week-button {
+    padding: 8px 8px 8px 3px;
+  }
 }
-label[for="weekView"] {
-  position: absolute;
-  right: 0px;
+@media (min-width: 768px) and (max-width: 1199px) {
+  .toggleButton {
+    font-size: 12px;
+  }
+  .day-button {
+    padding: 10px 4px 10px 10px;
+  }
+  .week-button {
+    padding: 10px 10px 10px 4px;
+  }
 }
-#weekView:checked ~ .switch {
-  background: #027e6a;
-}
-#weekView:checked ~ .switch span {
-  background: #fff;
-  margin-left: -8px;
-}
-#weekView:checked ~ .switch span:after {
-  background: #fff;
-  height: 20px;
-  margin-top: -8px;
-  margin-left: 8px;
-}
-#dayView:checked ~ .switch label[for="dayView"] {
-  color: #fff;
-}
-#weekView:checked ~ .switch label[for="weekView"] {
-  color: #fff;
+@media (min-width: 1200px) {
+  .toggleButton {
+    font-size: 14px;
+  }
+  .day-button {
+    padding: 10px 6px 10px 12px;
+  }
+  .week-button {
+    padding: 10px 12px 10px 6px;
+  }
 }
 </style>

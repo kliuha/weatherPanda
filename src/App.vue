@@ -42,4 +42,32 @@ body {
 #nav a.router-link-exact-active {
   color: #42b983;
 }
+.container {
+  margin: 0 auto;
+}
+@media (max-width: 479px) {
+  .container {
+    width: 320px;
+  }
+}
+@media (min-width: 480px) and (max-width: 767px) {
+  .container {
+    width: 450px;
+  }
+}
+@media (min-width: 768px) and (max-width: 991px) {
+  .container {
+    width: 720px;
+  }
+}
+@media (min-width: 992px) and (max-width: 1199px) {
+  .container {
+    width: 950px;
+  }
+}
+@media (min-width: 1200px) {
+  .container {
+    width: 1200px;
+  }
+}
 </style>

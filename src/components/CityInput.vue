@@ -26,7 +26,7 @@
 </template>
 
 <script>
-import Loader from "@/components/Loader.vue";
+import Loader from "@/components/Tools/Loader.vue";
 import { mapGetters, mapActions } from "vuex";
 
 export default {
