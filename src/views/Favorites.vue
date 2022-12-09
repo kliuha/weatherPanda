@@ -2,15 +2,9 @@
   <div class="home">
     <div class="container">
       <div v-for="block in blockArray" :key="block.id">
-        <Modal
-          v-if="showModal"
-          @accept="onAccept(block.id)"
-          @decline="onDecline"
-          v-bind:Message="Message"
-        />
         <WeatherBlock
           v-bind:id="block.id"
-          v-bind:weatherData="weatherArray"
+          v-bind:weatherData="getLocalData"
           @addBlock="onAdd"
           @deleteBlock="onDelete"
         />
@@ -20,30 +14,27 @@
 </template>
 
 <script>
-import WeatherBlock from "@/components/WeatherBlock";
-import Modal from "@/components/Tools/Modal.vue";
-import { mapActions, mapGetters } from "vuex";
+import WeatherBlock from "@/components/WeatherBlock.vue";
 
 export default {
-  name: "Home",
+  name: "Favorites",
   components: {
     WeatherBlock,
-    Modal,
   },
   data() {
     return {
       blockArray: [{ id: "0" }],
       limitDone: false,
-      Message: [{ id: "0", text: "Are you sure?" }],
       showModal: false,
-      weatherArray: [],
     };
   },
   computed: {
-    ...mapGetters("appModule", ["weatherData"]),
+    getLocalData: function () {
+      const items = { ...localStorage };
+      return items;
+    },
   },
   methods: {
-    ...mapActions("appModule", ["deleteWeatherItem"]),
     onAdd() {
       if (this.blockArray.length == 5) {
         alert("no");
@@ -70,9 +61,6 @@ export default {
       this.blockArray.forEach((element, index) => {
         element.id = `${index}`;
       });
-    },
-    weatherData: function (newVal) {
-      this.weatherArray = newVal;
     },
   },
 };

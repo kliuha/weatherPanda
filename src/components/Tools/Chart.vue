@@ -17,10 +17,17 @@ export default {
   props: {
     weatherArray: Array,
     blockId: String,
+    viewType: String,
   },
   watch: {
     weatherArray: function (newVal) {
-      this.dataForChart = this.reduceWeatherObject(newVal[this.blockId]);
+      this.dataForChart = this.mapWeatherObject(newVal[this.blockId]);
+      this.renderChart(this.dataForChart);
+    },
+    viewType: function () {
+      this.dataForChart = this.mapWeatherObject(
+        this.weatherArray[this.blockId]
+      );
       this.renderChart(this.dataForChart);
     },
   },
@@ -32,19 +39,26 @@ export default {
           labels: data?.map((row) => row.Date),
           datasets: [
             {
-              label: "Acquisitions by days",
+              label: "График по дням",
               data: data?.map((row) => row.Temperature),
             },
           ],
         },
       });
     },
-    reduceWeatherObject(obj) {
+    mapWeatherObject(obj) {
       let temp = [];
       const dateNow = new Date().getDate();
-      obj.list.forEach((element) => {
+      obj?.list.forEach((element) => {
         const elementDate = new Date(element.dt * 1000).getDate();
-        if (dateNow == elementDate) {
+        if (
+          this.viewType == "day"
+            ? dateNow == elementDate
+            : !temp.find(
+                (weather) =>
+                  weather?.Date.split(" ")[0] == element.dt_txt.split(" ")[0]
+              )
+        ) {
           temp.push({
             Date: element?.dt_txt,
             Temperature: (element?.main.temp - 273.15).toFixed(),

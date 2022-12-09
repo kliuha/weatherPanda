@@ -26,26 +26,25 @@ export default {
   },
   watch: {
     weatherObject: function (newVal) {
-      this.reduceWeatherObject(newVal);
+      this.mapWeatherObject(newVal);
     },
   },
   methods: {
-    reduceWeatherObject(obj) {
-      let temp = [];
+    mapWeatherObject(obj) {
+      this.fiveDaysWeather = [];
       obj.list.forEach((element) => {
         if (
-          !temp.find(
+          !this.fiveDaysWeather.find(
             (weather) =>
               weather?.Date.split(" ")[0] == element.dt_txt.split(" ")[0]
           )
         ) {
-          temp.push({
+          this.fiveDaysWeather.push({
             Date: element?.dt_txt.split(" ")[0],
             Temperature: (element?.main.temp - 273.15).toFixed(),
           });
         }
       });
-      this.fiveDaysWeather = temp;
     },
   },
 };
