@@ -39,7 +39,7 @@ export default {
           labels: data?.map((row) => row.Date),
           datasets: [
             {
-              label: "График по дням",
+              label: "График погоды",
               data: data?.map((row) => row.Temperature),
             },
           ],

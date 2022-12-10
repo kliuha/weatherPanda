@@ -4,7 +4,7 @@
       <div v-for="block in blockArray" :key="block.id">
         <Modal
           v-if="showModal"
-          @accept="onAccept(block.id)"
+          v-on:accept="onAccept(block.id)"
           @decline="onDecline"
           v-bind:Message="Message"
         />
@@ -34,7 +34,7 @@ export default {
     return {
       blockArray: [{ id: "0" }],
       limitDone: false,
-      Message: [{ id: "0", text: "Are you sure?" }],
+      Message: [{ id: "0", text: "Вы уверены?" }],
       showModal: false,
       weatherArray: [],
     };
@@ -45,9 +45,7 @@ export default {
   methods: {
     ...mapActions("appModule", ["deleteWeatherItem"]),
     onAdd() {
-      if (this.blockArray.length == 5) {
-        alert("no");
-      } else {
+      if (this.blockArray.length < 5) {
         this.blockArray.push({ id: `${this.blockArray.length}` });
       }
     },

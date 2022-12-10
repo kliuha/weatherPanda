@@ -4,9 +4,9 @@
       <div v-for="block in blockArray" :key="block.id">
         <WeatherBlock
           v-bind:id="block.id"
-          v-bind:weatherData="getLocalData"
-          @addBlock="onAdd"
-          @deleteBlock="onDelete"
+          v-bind:weatherData="weatherArray"
+          @addBlock="!disabled ? onAdd : ''"
+          @deleteBlock="!disabled ? onDelete : ''"
         />
       </div>
     </div>
@@ -23,22 +23,38 @@ export default {
   },
   data() {
     return {
-      blockArray: [{ id: "0" }],
+      blockArray: [],
       limitDone: false,
       showModal: false,
+      weatherArray: [],
+      localData: { ...localStorage },
     };
   },
+  mounted() {
+    for (let i = 0; i < 5; i++) {
+      if (localStorage.getItem(i)) {
+        try {
+          this.weatherArray.push(JSON.parse(localStorage.getItem(i)));
+          this.onAdd();
+        } catch (e) {
+          localStorage.removeItem(i);
+        }
+      }
+    }
+  },
   computed: {
-    getLocalData: function () {
-      const items = { ...localStorage };
-      return items;
+    getLocalData() {
+      const data = JSON.stringify(localStorage);
+      console.log(data);
+      return data;
+    },
+    disabled() {
+      return this.$route.fullPath == "/favorites";
     },
   },
   methods: {
     onAdd() {
-      if (this.blockArray.length == 5) {
-        alert("no");
-      } else {
+      if (this.blockArray.length < 5) {
         this.blockArray.push({ id: `${this.blockArray.length}` });
       }
     },
@@ -61,6 +77,15 @@ export default {
       this.blockArray.forEach((element, index) => {
         element.id = `${index}`;
       });
+    },
+    localData: function (newVal) {
+      for (const item in newVal) {
+        if (!isNaN(item)) {
+          this.weatherArray.push(JSON.parse(newVal[item]));
+          this.onAdd();
+        }
+      }
+      console.log(this.weatherArray);
     },
   },
 };

@@ -27,20 +27,6 @@ export default {
       default: 3000,
     },
   },
-  methods: {
-    hideNotification() {
-      if (this.messages.length) {
-        setTimeout(function () {
-          this.messages.splice(this.messages.length - 1, 1);
-        }, this.timeout);
-      }
-    },
-  },
-  watch: {
-    Message() {
-      this.hideNotification();
-    },
-  },
 };
 </script>
 

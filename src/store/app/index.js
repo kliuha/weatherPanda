@@ -45,9 +45,7 @@ export const appModule = {
       }
     },
     [constants.DELETE_WEATHER_ITEM]: (state, payload) => {
-      state.weatherData = state.weatherData.filter(
-        (item) => item.city.id !== payload
-      );
-    }
+      state.weatherData.splice(payload, 1);
+    },
   },
 };

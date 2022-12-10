@@ -24,6 +24,16 @@ export default {
       fiveDaysWeather: [],
     };
   },
+  mounted() {
+    if (this.disabled) {
+      this.mapWeatherObject(this.weatherObject);
+    }
+  },
+  computed: {
+    disabled() {
+      return this.$route.fullPath == "/favorites";
+    },
+  },
   watch: {
     weatherObject: function (newVal) {
       this.mapWeatherObject(newVal);

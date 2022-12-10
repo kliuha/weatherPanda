@@ -4,7 +4,7 @@
       <button
         class="favourite-button"
         @click="toggleFavourites"
-        v-bind:class="{ choosen: isChoosen }"
+        v-bind:class="{ choosen: isChoosen | favoritePage }"
       >
         &#9733;
       </button>
@@ -13,20 +13,23 @@
       <button
         name="dayWeekType"
         @click="setView('day')"
-        class="day-button toggleButton"
+        class="day-button toggle-button"
       >
         День
       </button>
       <button
         name="dayWeekType"
         @click="setView('week')"
-        class="week-button toggleButton"
+        class="week-button toggle-button"
       >
         Неделя
       </button>
     </div>
-    <div class="flex-items">
+    <div class="flex-items" v-if="!disabled">
       <CityInput />
+    </div>
+    <div v-else>
+      {{ weatherData[id].city.name }}
     </div>
     <div class="city-weather flex-items">
       <WeatherInfo
@@ -63,7 +66,12 @@ export default {
   },
   props: {
     id: String,
-    weatherData: Array,
+    weatherData: {
+      type: Array,
+      default: () => {
+        return [];
+      },
+    },
   },
   data() {
     return {
@@ -74,6 +82,12 @@ export default {
   computed: {
     setViewType: function () {
       return this.viewType;
+    },
+    favoritePage() {
+      return this.$route.fullPath == "/favorites";
+    },
+    disabled() {
+      return this.$route.fullPath == "/favorites";
     },
   },
   methods: {
@@ -100,7 +114,7 @@ export default {
     weatherData: function (newVal) {
       this.weatherData = newVal;
     },
-  }
+  },
 };
 </script>
 
@@ -160,7 +174,7 @@ export default {
   left: 3%;
   top: 50px;
 }
-.toggleButton {
+.toggle-button {
   background: #00bc9c;
   transition: all 0.2s ease;
   border-radius: 25px;
@@ -179,7 +193,7 @@ export default {
   border-left: none;
 }
 @media (max-width: 479px) {
-  .toggleButton {
+  .toggle-button {
     font-size: 8px;
   }
   .day-button {
@@ -190,7 +204,7 @@ export default {
   }
 }
 @media (min-width: 480px) and (max-width: 767px) {
-  .toggleButton {
+  .toggle-button {
     font-size: 10px;
   }
   .day-button {
@@ -201,7 +215,7 @@ export default {
   }
 }
 @media (min-width: 768px) and (max-width: 1199px) {
-  .toggleButton {
+  .toggle-button {
     font-size: 12px;
   }
   .day-button {
@@ -212,7 +226,7 @@ export default {
   }
 }
 @media (min-width: 1200px) {
-  .toggleButton {
+  .toggle-button {
     font-size: 14px;
   }
   .day-button {
