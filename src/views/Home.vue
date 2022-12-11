@@ -1,18 +1,18 @@
 <template>
   <div class="home">
     <div class="container">
+      <Modal
+        v-if="showModal"
+        @accept="onAccept"
+        @decline="onDecline"
+        v-bind:Message="Message"
+      />
       <div v-for="block in blockArray" :key="block.id">
-        <Modal
-          v-if="showModal"
-          v-on:accept="onAccept(block.id)"
-          @decline="onDecline"
-          v-bind:Message="Message"
-        />
         <WeatherBlock
           v-bind:id="block.id"
           v-bind:weatherData="weatherArray"
           @addBlock="onAdd"
-          @deleteBlock="onDelete"
+          @deleteBlock="onDelete(block.id)"
         />
       </div>
     </div>
@@ -37,6 +37,7 @@ export default {
       Message: [{ id: "0", text: "Вы уверены?" }],
       showModal: false,
       weatherArray: [],
+      blockForDelete: "",
     };
   },
   computed: {
@@ -49,18 +50,21 @@ export default {
         this.blockArray.push({ id: `${this.blockArray.length}` });
       }
     },
-    onDelete() {
+    onDelete(id) {
       if (this.blockArray.length > 1) {
+        this.blockForDelete = id;
         this.showModal = true;
       }
     },
-    onAccept(id) {
+    onAccept() {
       this.showModal = false;
-      this.deleteWeatherItem(id);
-      this.blockArray.splice(id, 1);
+      this.deleteWeatherItem(this.blockForDelete);
+      this.blockArray.splice(this.blockForDelete, 1);
+      this.blockForDelete = "";
     },
     onDecline() {
       this.showModal = false;
+      this.blockForDelete = "";
     },
   },
   watch: {

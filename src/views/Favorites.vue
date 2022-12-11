@@ -45,7 +45,6 @@ export default {
   computed: {
     getLocalData() {
       const data = JSON.stringify(localStorage);
-      console.log(data);
       return data;
     },
     disabled() {
@@ -85,7 +84,6 @@ export default {
           this.onAdd();
         }
       }
-      console.log(this.weatherArray);
     },
   },
 };

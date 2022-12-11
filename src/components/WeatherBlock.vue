@@ -25,7 +25,7 @@
         Неделя
       </button>
     </div>
-    <div class="flex-items" v-if="!disabled">
+    <div class="flex-items" v-if="!favoritePage">
       <CityInput />
     </div>
     <div v-else>
@@ -84,9 +84,6 @@ export default {
       return this.viewType;
     },
     favoritePage() {
-      return this.$route.fullPath == "/favorites";
-    },
-    disabled() {
       return this.$route.fullPath == "/favorites";
     },
   },

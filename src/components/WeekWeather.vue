@@ -25,12 +25,12 @@ export default {
     };
   },
   mounted() {
-    if (this.disabled) {
+    if (this.favoritePage) {
       this.mapWeatherObject(this.weatherObject);
     }
   },
   computed: {
-    disabled() {
+    favoritePage() {
       return this.$route.fullPath == "/favorites";
     },
   },
